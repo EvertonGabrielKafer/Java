@@ -1,0 +1,52 @@
+Trabalho Loja de carros
+
+Dupla:
+
+Everton Gabriel Käfer - RA: 60008892 - ADS
+Matheus José Freitas Herberle - RA: 60005543 - Eng. Software
+
+
+
+Regras de negócio aplicadas:
+
+RN01: Não permitir cadastro de cliente com CPF duplicado;
+RN02: Não permitir veículo com valor menor ou igual a zero;
+RN03: Não permitir venda de veículo indisponível;
+RN04: Após a venda, o veículo deve ficar indisponível;
+RN05: Venda deve possuir cliente;
+
+
+
+Banco de dados utilizado:
+
+CREATE TABLE cliente (
+    codigo SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) UNIQUE NOT NULL,
+    telefone VARCHAR(20)
+);
+CREATE TABLE veiculo (
+    codigo SERIAL PRIMARY KEY,
+    modelo VARCHAR(100) NOT NULL,
+    marca VARCHAR(50) NOT NULL,
+    ano INTEGER NOT NULL,
+    valor NUMERIC(10,2) NOT NULL,
+    disponivel BOOLEAN DEFAULT TRUE
+);
+CREATE TABLE venda (
+    codigo SERIAL PRIMARY KEY,
+    data_venda DATE NOT NULL,
+
+    cliente_id INTEGER NOT NULL,
+    veiculo_id INTEGER NOT NULL,
+
+    valor_venda NUMERIC(10,2) NOT NULL,
+
+    CONSTRAINT fk_venda_cliente
+        FOREIGN KEY(cliente_id)
+        REFERENCES cliente(codigo),
+
+    CONSTRAINT fk_venda_veiculo
+        FOREIGN KEY(veiculo_id)
+        REFERENCES veiculo(codigo)
+);
